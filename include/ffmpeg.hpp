@@ -14,39 +14,26 @@ extern "C"
 #include <libavformat/avformat.h> //用于封装与解封装操作
 }
 
-class FengZhuang
+#include <string.h>
+
+class FFmpeg
 {
 	public:
-		std::string Outurl;
-		AVFormatContext *ic; //rtmp flv 封装器配置类
-		AVStream *vs;
+		//输出Url
+		char *outUrl;
+		//像素格式转换上下文
+		SwsContext *vsc;
+		//输出数据结构
+		AVFrame *yuv;
+		//编码器上下文
+		AVCodecContext *vc;
+		//rtmp flv 封装器
+		AVFormatContext *ic;
 	public:
-		FengZhuang(std::string outurl); //注册所有封装器
-		void fengzhuanginit(AVCodecContext *vc); //初始化封装器配置类
-		void writeheader(); //写入封装头
+		FFmpeg();
+		void set_swscontext(int inWidth, int inHeight, int outWidth, int outHeight, enum AVPixelFormat srcFormat, enum AVPixelFormat dstFormat); //像素输入输出格式转换配置
+		void set_output(enum AVPixelFormat dstFormat, int outWidth, int outHeight, int pts, int buffsize); //输出器配置
 };
 
-class BianMa
-{
-	public:
-		AVCodecContext *vc; //编码器配置类
-		AVCodec *codec; //编码器类
-	public:
-		BianMa(); //注册所有解码编码器
-		void inith264(); //初始化编码器
-		void seth264(int width, int height, int fps); //设置编码器
-};
 
-class NetWork
-{
-	public:
-		NetWork(); //注册所有网络
-		void opennetio(AVFormatContext *ic, std::string &outurl);
-};
 
-class OutPut
-{
-	AVFrame *yuv; //输出配置类
-	public:
-		OutPut();
-};
