@@ -39,9 +39,8 @@ void Camera::show()
 	cv::waitKey(20);
 }
 
-void Camera::read()
+cv::Mat Camera::read()
 {
 	cam >> frame;
+	return frame;
 }
-
-
